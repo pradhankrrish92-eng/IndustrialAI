@@ -1,0 +1,55 @@
+# Central configuration for IndustrialAI.
+# Column names below are the *cleaned* snake_case names. The raw UCI names are
+# mapped to them in [columns.rename]; the data layer applies this mapping once.
+
+[paths]
+data_dir = "data"
+raw_filename = "ai4i2020.csv"
+artifacts_dir = "artifacts"
+reports_dir = "reports"
+
+[data]
+dataset_page_url = "https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset"
+download_url = "https://archive.ics.uci.edu/static/public/601/ai4i+2020+predictive+maintenance+dataset.zip"
+# Set to the SHA-256 printed by scripts/download_data.py to pin the exact file. Empty = skip check.
+expected_sha256 = ""
+
+[split]
+seed = 42
+train_size = 0.6
+val_size = 0.2
+test_size = 0.2
+
+[columns]
+target = "machine_failure"
+numeric_features = [
+    "air_temperature_k",
+    "process_temperature_k",
+    "rotational_speed_rpm",
+    "torque_nm",
+    "tool_wear_min",
+]
+categorical_features = ["type"]
+# Row identifiers: carry no physical signal, must not be features.
+identifier_columns = ["udi", "product_id"]
+# Failure-mode labels describe the same event as the target: label leakage.
+leakage_columns = ["twf", "hdf", "pwf", "osf", "rnf"]
+
+[columns.allowed_categories]
+type = ["H", "L", "M"]
+
+[columns.rename]
+"UDI" = "udi"
+"Product ID" = "product_id"
+"Type" = "type"
+"Air temperature [K]" = "air_temperature_k"
+"Process temperature [K]" = "process_temperature_k"
+"Rotational speed [rpm]" = "rotational_speed_rpm"
+"Torque [Nm]" = "torque_nm"
+"Tool wear [min]" = "tool_wear_min"
+"Machine failure" = "machine_failure"
+"TWF" = "twf"
+"HDF" = "hdf"
+"PWF" = "pwf"
+"OSF" = "osf"
+"RNF" = "rnf"
