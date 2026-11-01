@@ -1,14 +1,22 @@
 import sys
 from pathlib import Path
-from pathlib import Path
 
-import joblib
-import numpy as np
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-import streamlit as st
+BASE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE_DIR))
+sys.path.insert(0, str(BASE_DIR / "src"))
 
+import joblib  # noqa: E402
+import numpy as np  # noqa: E402
+import pandas as pd  # noqa: E402
+import plotly.express as px  # noqa: E402
+import plotly.graph_objects as go  # noqa: E402
+import streamlit as st  # noqa: E402
+
+# Register custom transformer in both module namespaces
+import industrial_ai.features as features_mod  # noqa: E402
+from industrial_ai.features import IndustrialFeatureEngineer  # noqa: F401, E402
+
+sys.modules["features"] = features_mod
 st.set_page_config(
     page_title="Industrial AI | Telemetry Diagnostics",
     page_icon="⚡",
